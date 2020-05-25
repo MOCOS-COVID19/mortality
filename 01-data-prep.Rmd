@@ -1,0 +1,89 @@
+---
+title: "Data preparation"
+output:
+  html_document:
+    df_print: paged
+---
+
+# Read data
+
+Read data from `Zejscie_data 20.05.xlsx` file
+
+```{r, warning=FALSE, message=FALSE}
+library("openxlsx")
+library("lubridate")
+
+dane <- read.xlsx("Zejscie_data 20.05.xlsx")
+```
+
+# Clean data
+
+Convert character data to factors
+
+```{r}
+for (i in 1:ncol(dane)) {
+  if (class(dane[,i]) == "character")
+    dane[,i] <- factor(dane[,i])
+}
+dane$Przebieg.choroby <- factor(dane$Przebieg.choroby, levels = c("Lekki", "Średni", "Ciężki"))
+
+colnames(dane) <- make.names(colnames(dane))
+
+for (i in c(1,2,4,9,10,13,14,18,23)) {
+    dane[,i] <- gsub(as.character(dane[,i]), pattern = "2002", replacement = "2020")
+    dane[,i] <- dmy(dane[,i])
+}
+```
+
+# Clean names
+
+```{r}
+small_data <- dane[,c(6,7,8,11,19,20,21,22,17,9,10)]
+
+# Clean dates
+# zacznij z Data.zachorowania..wystąpienia.pierwszych.objawów.
+small_data$data_start <- small_data$Data.zachorowania..wystąpienia.pierwszych.objawów.
+
+# jeżeli nie ma to wpisz Data.zgłoszenia.się.do.lekarza
+for (i in 1:nrow(small_data)) {
+  if (is.na(small_data$data_start[i]) | (
+    !is.na(small_data$Data.zgłoszenia.się.do.lekarza[i]) 
+    &
+    small_data$data_start[i] < small_data$Data.zgłoszenia.się.do.lekarza[i]
+  ))
+    small_data$data_start[i] <- small_data$Data.zgłoszenia.się.do.lekarza[i]
+}
+
+# jeżeli nie ma to wpisz Dodane.dnia
+for (i in 1:nrow(small_data)) {
+  if (is.na(small_data$data_start[i]) | (
+    !is.na(dane$Dodane.dnia[i]) 
+    &
+    small_data$data_start[i] < dane$Dodane.dnia[i]
+  ))
+    small_data$data_start[i] <- dane$Dodane.dnia[i]
+}
+
+small_data$zgon <- grepl(small_data$Zejście.choroby, pattern = "zgon", ignore.case = TRUE)
+
+colnames(small_data)[5] = "Gorączka"
+colnames(small_data)[3] = "Środowisko"
+
+small_data$Przebieg.choroby <- as.character(small_data$Przebieg.choroby)
+small_data$Przebieg.choroby[is.na(small_data$Przebieg.choroby)] <- "Brak-danych"
+small_data$Przebieg.choroby <- factor(small_data$Przebieg.choroby, 
+                                      levels = c("Brak-danych", "Lekki", "Średni", "Ciężki"))
+
+small_data <- small_data[,c(1,2,3,5,6,7,8,13)]
+small_data <- na.omit(small_data)
+
+```
+
+
+# Save clean data
+
+Clean data is saved in `small_data.rds`
+
+```{r}
+saveRDS(small_data, file = "small_data.rds")
+```
