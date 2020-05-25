@@ -39,6 +39,7 @@ for (i in c(1,2,4,9,10,13,14,18,23)) {
 
 ```{r}
 small_data <- dane[,c(6,7,8,11,19,20,21,22,17,9,10)]
+small_data$length <- as.numeric(dane[,14]-dane[,13])
 
 # Clean dates
 # zacznij z Data.zachorowania..wystąpienia.pierwszych.objawów.
@@ -74,7 +75,10 @@ small_data$Przebieg.choroby[is.na(small_data$Przebieg.choroby)] <- "Brak-danych"
 small_data$Przebieg.choroby <- factor(small_data$Przebieg.choroby, 
                                       levels = c("Brak-danych", "Lekki", "Średni", "Ciężki"))
 
-small_data <- small_data[,c(1,2,3,5,6,7,8,13)]
+small_data <- small_data[,c(1,2,3,5,6,7,8,14,12)]
+# fix length
+small_data$length <- small_data$length + 1
+small_data$length[is.na(small_data$length)] <- -100
 small_data <- na.omit(small_data)
 
 ```
