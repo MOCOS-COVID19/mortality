@@ -75,7 +75,7 @@ small_data$Przebieg.choroby[is.na(small_data$Przebieg.choroby)] <- "Brak-danych"
 small_data$Przebieg.choroby <- factor(small_data$Przebieg.choroby, 
                                       levels = c("Brak-danych", "Lekki", "Średni", "Ciężki"))
 
-small_data <- small_data[,c(1,2,3,5,6,7,8,14,12)]
+small_data <- small_data[,c(1,2,3,5,6,7,8,14,12,13)]
 # fix length
 small_data$length <- small_data$length + 1
 small_data$length[is.na(small_data$length)] <- -100
