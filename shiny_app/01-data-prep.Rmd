@@ -38,7 +38,8 @@ for (i in c(1,2,4,9,10,13,14,18,23)) {
 # Clean names
 
 ```{r}
-small_data <- dane[,c(6,7,8,11,19,20,21,22,17,9,10)]
+
+small_data <- dane[,c(6,7,8,11,19,20,21,22,17,9,10,26, 24)]
 small_data$length <- as.numeric(dane[,14]-dane[,13])
 
 # Clean dates
@@ -75,12 +76,37 @@ small_data$Przebieg.choroby[is.na(small_data$Przebieg.choroby)] <- "Brak-danych"
 small_data$Przebieg.choroby <- factor(small_data$Przebieg.choroby, 
                                       levels = c("Brak-danych", "Lekki", "Średni", "Ciężki"))
 
-small_data <- small_data[,c(1,2,3,5,6,7,8,14,12,13)]
+small_data <- small_data[,c(1,2,3,5,6,7,8,16,14,15,12,13)]
 # fix length
 small_data$length <- small_data$length + 1
 small_data$length[is.na(small_data$length)] <- -100
+
+small_data$ID.wywiadu <- as.character(small_data$ID.wywiadu)
+small_data$ID.wywiadu[is.na(small_data$ID.wywiadu)] <- -1
+
+small_data$zawod <- factor(ifelse((!is.na(small_data$zawod)) & (small_data$zawod == "Personel medyczny"), "Medyczny", "Inny"))
+
+# time before hospitalisation
+small_data$length_before_hosp <- as.numeric(small_data$data_start - dane$Hospitalizacja.od)
+small_data$length_before_hosp[is.na(small_data$length_before_hosp)] = -100
+
 small_data <- na.omit(small_data)
 
+# add parent
+data_parent <- dane[,c(5, 7, 22, 24)]
+colnames(data_parent) <- c("ID.wywiadu", "Wiek_parent", "Przebieg_parent", "Zawod_parent")
+data_parent$Zawod_parent <- factor(ifelse((!is.na(data_parent$Zawod_parent)) & (data_parent$Zawod_parent == "Personel medyczny"), "Medyczny", "Inny"))
+small_data <- na.omit(small_data)
+
+small_data$ID.wywiadu <- as.character(small_data$ID.wywiadu)
+data_parent$ID.wywiadu <- as.character(data_parent$ID.wywiadu)
+
+small_data2 <- merge(small_data, data_parent, by.x = "ID.wywiadu", by.y = "ID.wywiadu", all.x = TRUE)
+
+tab_parent <- table(Parent = small_data2$Przebieg_parent, Child = small_data2$Przebieg.choroby)
+
+library(ca)
+plot(ca(tab_parent))
 ```
 
 
@@ -90,4 +116,5 @@ Clean data is saved in `small_data.rds`
 
 ```{r}
 saveRDS(small_data, file = "small_data.rds")
+saveRDS(small_data2, file = "small_data2.rds")
 ```
