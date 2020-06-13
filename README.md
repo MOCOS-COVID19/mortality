@@ -1,7 +1,17 @@
-# Explainable modelling of covid-19 mortality for the Polish population
+# XAI for modelling of covid-19 mortality for the Polish population
 
-Files:
+## Crude mortality rates
 
-* `00-install-prerequisites.R` install all required packages
-* `01-data-prep.Rmd` reads `Zejscie_data 20.05.xlsx` file, clean cols and rows, writes `small_data.rds`
-* `02-app.R` shiny application for exploration of model for mortality 
+The covid-19 related mortality reported by different countries is most often reported in age groups. 
+The following graphs summarize [these statisitcs](https://en.wikipedia.org/wiki/Mortality_due_to_COVID-19).
+
+![Mortality for regions, data from Wikipedia](mortality_all_A.png)
+
+## Can we get better resolution for these predictions? 
+
+Below we use XGBoost models and logistic regression with linear tail-restricted cubic splines for more accurate mortality prediction.
+
+Model predictions are visualized using Partial Dependence Profiles. Averages are calcualted in Male/Female groups and With/without cormodibilities.
+
+![Mortality for Poland, data from TODO](mortality_all_B.png)
+
