@@ -4,3 +4,4 @@ Dane o zgonach pobrano z projektu The Human Mortality Database (https://www.mort
 
 ![Mortality for Poland, data from TODO](covid_deaths_in_context_pl.png)
 
+Inspirowane przez https://www.ft.com/content/a2901ce8-5eb7-4633-b89c-cbdf5b386938
