@@ -5,15 +5,16 @@ data_mortality <- read.csv("data_mortality.csv")
 data_covid <- read.csv("data_covid.csv")
 
 
-ggplot(data_mortality, aes(x = week, y = deaths, group = year)) + 
+ggplot(data_mortality, aes(x = week, y = deaths, group = year)) +
   geom_line(aes(col = is2020)) +
   geom_line(data = data_covid, aes(x = week, y = deaths)) +
   facet_wrap(~ country, scales = 'free_y') +
   scale_color_manual(values = c("FALSE" = 'gray', "TRUE" = 'red')) +
-  guides(col = FALSE) 
+  guides(col = FALSE)
 
 
 country <- c("Austria", "Belgium", "Denmark", "France", "Germany", "Italy", "Poland", "Portugal", "Spain", "Sweden", "Switzerland", "United_States")
+country <- unique(deaths_2020$country)
 
 data_mortality_2020 <- data_mortality[data_mortality$is2020,]
 
@@ -21,7 +22,7 @@ deaths_2020 <- merge(data_covid, data_mortality_2020, by = c("year","week","coun
 deaths_2020$deaths.x <- pmax(0, deaths_2020$deaths.x)
 deaths_2020$net <- deaths_2020$deaths.y - deaths_2020$deaths.x
 
-ggplot(data_mortality[data_mortality$country %in% country,], aes(x = week, y = deaths, group = year)) + 
+ggplot(data_mortality[data_mortality$country %in% country,], aes(x = week, y = deaths, group = year)) +
   geom_ribbon(data = deaths_2020[deaths_2020$country %in% country,], aes(x = week, ymin = net, ymax = deaths.y, y = deaths.y), alpha=0.3, fill = "red") +
   geom_line(aes(col = is2020), alpha=0.5) +
   geom_line(data = deaths_2020[deaths_2020$country %in% country,], aes(y = deaths.y, col = is2020)) +
@@ -34,7 +35,7 @@ ggplot(data_mortality[data_mortality$country %in% country,], aes(x = week, y = d
 
 
 
-ggplot(data_mortality[data_mortality$country %in% country,], aes(x = week, y = deaths, group = year)) + 
+ggplot(data_mortality[data_mortality$country %in% country,], aes(x = week, y = deaths, group = year)) +
   geom_ribbon(data = deaths_2020[deaths_2020$country %in% country,], aes(x = week, ymin = net, ymax = deaths.y, y = deaths.y), alpha=0.3, fill = "red") +
   geom_line(aes(col = is2020), alpha=0.5) +
   geom_line(data = deaths_2020[deaths_2020$country %in% country,], aes(y = deaths.y, col = is2020)) +
