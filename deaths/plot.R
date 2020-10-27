@@ -39,9 +39,10 @@ ggplot(data_mortality[data_mortality$country %in% country,], aes(x = week, y = d
   geom_ribbon(data = deaths_2020[deaths_2020$country %in% country,], aes(x = week, ymin = net, ymax = deaths.y, y = deaths.y), alpha=0.3, fill = "red") +
   geom_line(aes(col = is2020), alpha=0.5) +
   geom_line(data = deaths_2020[deaths_2020$country %in% country,], aes(y = deaths.y, col = is2020)) +
-  facet_wrap(~ country, scales = 'free_y', ncol = 3) +
+  geom_smooth(data = data_mortality[!data_mortality$is2020 &  data_mortality$country %in% country ,], aes(group=country), se=FALSE, alpha=0.5, size=0.5,color = "black") +
+  facet_wrap(~ country, scales = 'free_y', ncol = 5) +
   #  facet_wrap(~ country, ncol = 3) +
-  scale_color_manual(values = c("FALSE" = 'gray', "TRUE" = 'red')) +
+  scale_color_manual(values = c("FALSE" = 'gray', "TRUE" = 'red')) +  ylim(0,NA) +
   guides(col = FALSE)  + DALEX::theme_ema() + xlab("Tydzień w roku") + ylab("Liczba zgonów") +
   ggtitle("Liczba zgonów w latach 2000-2020. Czerwona linia to zgony w roku 2020, czerwone pola to zgony raportowane jako COVID-19.\n")
 
