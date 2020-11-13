@@ -2,6 +2,6 @@
 
 Dane o zgonach pobrano z projektu The Human Mortality Database (https://www.mortality.org/). Szare linie przedstawiają dane z ubiegłych lat, czerwona linia odpowiada danym z 2020. Dane o zgonach COVID-19 zaznaczono za pomocą czerwonego pola, pochodzą one ze statystyk opublikowanych w serwisie Wikipedia.
 
-![Mortality for Poland, data from TODO](covid_deaths_in_context_pl.png)
+![Mortality for Poland, data from TODO](covid_deaths_11_2020.png)
 
 Inspirowane przez https://www.ft.com/content/a2901ce8-5eb7-4633-b89c-cbdf5b386938
