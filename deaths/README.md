@@ -4,10 +4,10 @@ Dane o zgonach pobrano z projektu The Human Mortality Database (https://www.mort
 
 Zgony wszystkie i covid do 44 tygodnia
 
-![Mortality for Poland, data from TODO](covid_deaths_11_2020.png)
+<img width="1000" src="covid_deaths_11_2020.png">
 
 Zgony wszystkie do 44 tygodnia a covid do 46 tygodnia
 
-![Tygodnie 46](week_45.png)
+<img width="700" src="week_45.png">
 
 Inspirowane przez https://www.ft.com/content/a2901ce8-5eb7-4633-b89c-cbdf5b386938
